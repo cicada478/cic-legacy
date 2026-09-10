@@ -1,0 +1,6 @@
+.Rhistory
+.RData
+.Ruserdata
+.local-library/
+cic.Rcheck/
+cic_*.tar.gz
