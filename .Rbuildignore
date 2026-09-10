@@ -3,3 +3,4 @@
 ^cic\.Rcheck$
 ^\.local-library$
 ^\.gitignore$
+^README\.en\.md$

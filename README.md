@@ -1,8 +1,30 @@
 # cic
 
+**简体中文** | [English](README.en.md)
+
 个人常用的单细胞测序数据分析 R 工具包。当前版本收录绘图保存函数 `ggsave1()`，后续可在 `R/` 中逐步添加其他工具。
 
 ## 安装
+
+从 GitHub 安装最新开发版本：
+
+```r
+install.packages("remotes") # 已安装则跳过
+remotes::install_github("cicada478/cic")
+```
+
+安装固定的发布版本：
+
+```r
+remotes::install_github("cicada478/cic@v0.1.0")
+```
+
+也可以从 [Releases](https://github.com/cicada478/cic/releases) 下载 `cic_0.1.0.tar.gz`，然后安装（将路径替换为实际下载位置）：
+
+```r
+install.packages("ggplot2") # 已安装则跳过
+install.packages("path/to/cic_0.1.0.tar.gz", repos = NULL, type = "source")
+```
 
 下载或克隆仓库后，将 R / RStudio 的工作目录设为包根目录，然后运行：
 
@@ -48,6 +70,8 @@ saved_file <- ggsave1("result.pdf", p)
 ## 开发
 
 包版本为 `0.1.0`，目前仅依赖 `ggplot2` 及 R 自带的 `tools`、`utils`。维护者为 Cicada（cicada_7x@163.com）。
+
+在 `R/` 中按功能添加函数，在 `man/` 中维护帮助文档，并在 `tests/` 中添加必要的行为检查。新增公开函数需在 `NAMESPACE` 中导出。
 
 ```sh
 R CMD build .
