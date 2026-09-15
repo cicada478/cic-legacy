@@ -10,7 +10,7 @@
 #'   `path`, `device`, `width`, `height`, `units`, and `dpi`.
 #' @param confirm Logical. If `TRUE` (default), an existing destination triggers
 #'   an interactive menu offering overwrite, automatic renaming, or cancellation.
-#'   In a non-interactive session, an existing destination raises an error.
+#'   In a non-interactive session, an existing destination is automatically renamed.
 #'   Set `FALSE` to explicitly allow overwriting without a prompt.
 #' @param add_date Logical. Whether to append the date; defaults to `TRUE`.
 #' @return Invisibly, the final destination filename, including `path` if supplied.
@@ -51,16 +51,15 @@ ggsave1 <- function(filename, plot = ggplot2::last_plot(), ...,
   }
 
   if (confirm && file.exists(filename)) {
-    if (!interactive()) {
-      stop("File already exists: ", filename,
-           ". Use a different filename or set `confirm = FALSE` to overwrite.",
-           call. = FALSE)
+    choice <- if (interactive()) {
+      utils::menu(
+        c("Overwrite / \u8986\u76d6", "Auto-rename / \u81ea\u52a8\u91cd\u547d\u540d",
+          "Cancel / \u53d6\u6d88"),
+        title = paste("File already exists:", filename)
+      )
+    } else {
+      2L
     }
-    choice <- utils::menu(
-      c("Overwrite / \u8986\u76d6", "Auto-rename / \u81ea\u52a8\u91cd\u547d\u540d",
-        "Cancel / \u53d6\u6d88"),
-      title = paste("File already exists:", filename)
-    )
     if (choice == 2L) {
       filename <- auto_rename(filename)
       message("Saving as: ", filename)

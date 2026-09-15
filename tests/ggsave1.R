@@ -20,9 +20,20 @@ run_checks <- function() {
   stopifnot(identical(result$value, expected), !result$visible,
             file.exists(expected), file.info(expected)$size > 0)
 
-  # A rejected collision must leave the existing file unchanged.
+  # Non-interactive collisions save to unused numbered paths without overwriting.
+  stopifnot(!interactive())
   checksum <- tools::md5sum(expected)
-  expect_error(ggsave1("plot.pdf", p, path = target_dir), "File already exists")
+  renamed <- withVisible(ggsave1("plot.pdf", p, path = target_dir,
+                                 width = 3, height = 2))
+  first_numbered <- sub("\\.pdf$", "_1.pdf", expected)
+  stopifnot(identical(renamed$value, first_numbered), !renamed$visible,
+            identical(rawToChar(readBin(first_numbered, "raw", n = 4L)), "%PDF"))
+  first_checksum <- tools::md5sum(first_numbered)
+  second_numbered <- ggsave1("plot.pdf", p, path = target_dir,
+                             width = 3, height = 2)
+  stopifnot(identical(second_numbered, sub("\\.pdf$", "_2.pdf", expected)),
+            file.exists(second_numbered),
+            identical(first_checksum, tools::md5sum(first_numbered)))
   stopifnot(identical(checksum, tools::md5sum(expected)))
 
   # Explicit overwrite replaces a sentinel file with a real PDF.
@@ -37,6 +48,11 @@ run_checks <- function() {
   occupied <- file.path(output_dir, "fixed_1.pdf")
   file.create(occupied)
   stopifnot(identical(rename(fixed), file.path(output_dir, "fixed_2.pdf")))
+  fixed_checksums <- tools::md5sum(c(fixed, occupied))
+  fixed_renamed <- ggsave1(fixed, p, add_date = FALSE, width = 3, height = 2)
+  stopifnot(identical(fixed_renamed, file.path(output_dir, "fixed_2.pdf")),
+            identical(rawToChar(readBin(fixed_renamed, "raw", n = 4L)), "%PDF"),
+            identical(fixed_checksums, tools::md5sum(c(fixed, occupied))))
 
   # Explicit devices also support filenames without an extension.
   plain <- file.path(output_dir, "no_extension")

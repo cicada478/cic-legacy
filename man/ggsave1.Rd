@@ -12,7 +12,7 @@ ggsave1(filename, plot = ggplot2::last_plot(), ..., confirm = TRUE,
 \code{path}, \code{device}, \code{width}, \code{height}, \code{units}, and \code{dpi}.}
 \item{confirm}{Logical. If \code{TRUE} (default), an existing destination triggers
 an interactive menu offering overwrite, automatic renaming, or cancellation.
-In a non-interactive session, an existing destination raises an error.
+In a non-interactive session, an existing destination is automatically renamed.
 Set \code{FALSE} to explicitly allow overwriting without a prompt.}
 \item{add_date}{Logical. Whether to append the date; defaults to \code{TRUE}.}
 }
