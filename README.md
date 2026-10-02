@@ -1,6 +1,6 @@
 # cic
 
-**简体中文** | [English](README.en.md)
+**简体中文** | [English](inst/doc/README.en.md)
 
 个人常用的单细胞测序数据分析 R 工具包。当前版本收录绘图保存函数 `ggsave1()`。
 
@@ -72,3 +72,22 @@ saved_file <- ggsave1("result.pdf", p)
 ## 开发
 
 包版本为 `0.1.1`，目前仅依赖 `ggplot2` 及 R 自带的 `tools`、`utils`。维护者为 cicada478（cicada_7x@163.com）。
+
+需要先安装 R 和 `ggplot2`。从包根目录运行以下终端命令（需要将 R 加入 PATH）：
+
+```sh
+R CMD build .
+R CMD check --no-manual cic_0.1.1.tar.gz
+```
+
+`R CMD check` 会安装包，运行帮助示例及 `tests/ggsave1.R`。预期结果为 `Status: OK`；测试覆盖真实 PDF 保存、日期和编号后缀、非交互重名保护、显式覆盖及参数校验。
+
+已验证环境：Windows、R 4.4.1、ggplot2 4.0.3。GitHub Actions 配置在 Windows 和 Ubuntu 的当前 R release 上执行包检查；具体通过情况以 [Actions](https://github.com/cicada478/cic/actions) 为准，不表示所有 R 版本均已测试。
+
+英文文档放在 `inst/doc/`，会随后续构建的源码包一起分发。已发布的旧版本附件保持原样。
+
+问题反馈请使用 [GitHub Issues](https://github.com/cicada478/cic/issues)，代码改进通过 Pull Request 提交。
+
+## 许可证
+
+本项目采用 MIT 许可证，完整正文见 [LICENSE.md](https://github.com/cicada478/cic/blob/main/LICENSE.md)。R 包保留 `MIT + file LICENSE` 声明及 `LICENSE` 中的年份、版权人信息。
